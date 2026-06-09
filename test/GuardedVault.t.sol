@@ -62,7 +62,6 @@ contract GuardedVaultTest is Test {
         vault.deposit{value: 5 ether}();
 
         Reentrant re = new Reentrant(vault);
-        vm.deal(address(re), 1 ether);
         re.attack{value: 1 ether}();
 
         // attacker drained more than deposited

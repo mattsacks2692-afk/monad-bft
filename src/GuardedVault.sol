@@ -26,7 +26,7 @@ contract GuardedVault {
         require(balances[msg.sender] >= amt, "INSUFFICIENT");
         (bool ok, ) = msg.sender.call{value: amt}("");   // <-- reentrancy seam
         require(ok, "XFER_FAIL");
-        balances[msg.sender] -= amt;
+        unchecked { balances[msg.sender] -= amt; } // naive: no overflow guard, reentrancy drains vault
     }
 
     function pause() external onlyGuardian { paused = true; emit Paused(); }
